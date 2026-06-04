@@ -324,6 +324,19 @@ a{color:var(--gold2);text-decoration:none}
   </div>
 </div>
 
+<div id="recorderModal" class="overlay hidden">
+  <div class="intro-card">
+    <div class="accuse-box">
+      <div class="ic">🎙️</div>
+      <h2>새 단서 발견</h2>
+      <p>잠겨 있던 단서를 모두 해제했습니다.<br><b>중앙 생일홀</b>에서 새 단서 <b>[녹음기]</b>가 추가로 발견되었습니다.<br>중앙 생일홀로 가보세요.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:16px">
+        <button class="lockbtn" id="recorderGo">중앙 생일홀로 가기</button>
+        <button class="lockbtn" id="recorderClose" style="background:linear-gradient(180deg,#2a2016,#1a130b)">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 <audio id="aud0" loop></audio>
 <audio id="aud1" loop></audio>
@@ -416,6 +429,10 @@ function lockHint(n){
 // ---- helpers ----
 function firstImg(html){const m=html&&html.match(/<img[^>]+src="([^"]+)"/);return m?m[1]:null;}
 function isUnlocked(id){return !N[id].locked || unlocked[id];}
+const RECORDER_ID='37281d1c9e1480009b17e98839289adb';
+function recorderReady(){return lockedIds.every(function(id){return id===RECORDER_ID||unlocked[id];});}
+function hideRecorderLink(){if(recorderReady())return;var rl=el.querySelector('a.navlink[data-target="'+RECORDER_ID+'"]');if(rl){var p=rl.closest('p')||rl;p.style.display='none';}}
+function maybeRevealRecorder(){if(recorderReady()&&!localStorage.getItem('dsbp_recorder_revealed')){try{localStorage.setItem('dsbp_recorder_revealed','1');}catch(e){}var m=$('#recorderModal');if(m)m.classList.remove('hidden');}}
 function trigTrack(id){ return (DATA.triggers && DATA.triggers[id]) || null; }
 function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
 
@@ -503,6 +520,7 @@ function renderContent(id){
   el.innerHTML=h;
   bindNav();
   initInviteSlider();
+  hideRecorderLink();
 }
 function initInviteSlider(){
   const box=el.querySelector('[data-invite-slider]');
@@ -571,7 +589,7 @@ function tryUnlock(id){
     ok = n.answers.includes(v);
   }
   if(ok){
-    unlocked[id]=true; store.set(unlocked); updateProgress();
+    unlocked[id]=true; store.set(unlocked); updateProgress(); maybeRevealRecorder();
     toast('🔓 '+n.title+' 잠금 해제');
     enteredExploration=true;
     const _tt=trigTrack(id); if(_tt) playTrack(_tt);
@@ -647,6 +665,9 @@ function guess(name,btn){
   }
 }
 $('#accuseClose').onclick=()=>$('#accuseModal').classList.add('hidden');
+var _rm=$('#recorderModal');
+$('#recorderClose').onclick=()=>{_rm.classList.add('hidden');};
+$('#recorderGo').onclick=()=>{_rm.classList.add('hidden');navigate(parent[RECORDER_ID]||DATA.rootId);};
 $('#accuseReveal').onclick=()=>{ $('#accuseModal').classList.add('hidden'); navigate(DATA.solutionId); };
 
 // ---- intro ----
@@ -679,7 +700,7 @@ $('#startBtn').onclick=()=>{
 var introMusicStarted=false;
 function startIntroMusic(){ if(introMusicStarted) return; introMusicStarted=true; A.ready=true; A.els.forEach(a=>a.volume=0); playTrack(DATA.introTheme); }
 ['pointerdown','wheel','touchstart','keydown'].forEach(ev=>$('#intro').addEventListener(ev,startIntroMusic,{once:true,passive:true}));
-document.addEventListener('keydown',e=>{ if(e.key==='Escape') $('#accuseModal').classList.add('hidden'); const st=$('#charStage'); if(st){ if(e.key==='ArrowLeft'){$('#charPrev').click();} else if(e.key==='ArrowRight'){$('#charNext').click();} } });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ $('#accuseModal').classList.add('hidden'); var _rm2=$('#recorderModal'); if(_rm2) _rm2.classList.add('hidden'); } const st=$('#charStage'); if(st){ if(e.key==='ArrowLeft'){$('#charPrev').click();} else if(e.key==='ArrowRight'){$('#charNext').click();} } });
 })();
 </script>
 </body>
