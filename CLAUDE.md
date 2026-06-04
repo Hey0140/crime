@@ -13,7 +13,7 @@
   - `assets/audio/*.mp3` — 사용 중 BGM
   - `assets/img/{bg,characters,invitations,clues}/*.png`, `assets/img/cover.png` — 게임 이미지
   - `assets/spare/{img,audio}/` — **예비(미사용) 리소스**. 게임이 참조하지 않지만 향후 단서/BGM 후보로 tracked 보관. 삭제 금지.
-  - `source/notion_mystery_game_html/` — 초기 버전 Notion 내보내기 **원본 저작 자료**(.html). 게임과 무관, 참조 안 함. 손대지 말 것.
+  - `source/notion_mystery_game_html/` — 초기 버전 Notion 내보내기 **원본 저작 자료**(.html). 게임과 무관, 참조 안 함. **`.gitignore` 처리**되어 레포에는 없고 로컬에만 존재(필요 시 git 히스토리 `pre-refactor` 태그에서 복구).
   - `docs/` — 매핑표(`migration-map.csv`), OST 출처(`ost-credits.xlsx`, `soundtrack-README.txt`)
   - 어떤 파일이 실제로 참조되는지는 외워두지 말고 매번 `tools/check-assets.py`로 확인할 것(아래 4번).
 
@@ -33,7 +33,7 @@
 
 5. **거대 단일 HTML이다.** 본체를 편집할 때는 인라인 JS 데이터 구조(`DATA`/`N`, 방 id, `locked`/`answers` 등 게임 로직)를 깨지 않도록 국소적으로 수정한다. 대규모 코드 분리(JS/CSS 외부화)는 별도 합의된 과제로만 진행한다.
 
-6. **`source/`와 `assets/spare/`는 손대지 않는다.** `source/`는 원본 Notion 저작 자료, `assets/spare/`는 예비 리소스다. 둘 다 게임과 무관하며 보존 목적이니 삭제·수정하지 말 것.
+6. **`assets/spare/`는 손대지 않는다.** 예비(미사용) 리소스이며 게임과 무관하지만 보존 목적이니 삭제·수정하지 말 것. (원본 Notion 저작 자료 `source/`는 `.gitignore` 처리되어 레포 밖 로컬에만 있음 — 건드릴 일 없음.)
 
 7. 리팩토링 경위·구조 결정은 `REFACTORING_PROPOSAL.md`, 경로 변경 매핑은 `docs/migration-map.csv` 참고.
 

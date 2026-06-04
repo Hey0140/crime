@@ -2,7 +2,7 @@
 
 > 작성일: 2026-06-04 · 상태: **Phase 0~5 실행 완료** · 작업 브랜치: `refactor/restructure` · 롤백 태그: `pre-refactor`
 
-이 문서는 레포 구조 정리 계획서이자 실행 기록입니다. 아래 1~9장은 계획 당시 분석이며, **실행 결과는 10장**에 정리되어 있습니다. 결정 사항: 파일명 의미있는 ASCII화 / 예비 리소스·Notion 원본 모두 레포 tracked 보관 / Phase 4(RES 맵)는 인코딩 문제 해소로 생략.
+이 문서는 레포 구조 정리 계획서이자 실행 기록입니다. 아래 1~9장은 계획 당시 분석이며, **실행 결과는 10장**에 정리되어 있습니다. 결정 사항: 파일명 의미있는 ASCII화 / 예비 리소스(`assets/spare/`)는 레포 tracked 보관 / Notion 원본(`source/`)은 `.gitignore` 처리해 로컬만 보관 / Phase 4(RES 맵)는 인코딩 문제 해소로 생략.
 
 ---
 
@@ -275,7 +275,7 @@ crime/
 │  ├─ audio/               # 사용 BGM 25
 │  ├─ img/{bg,characters,invitations,clues}/ + cover.png   # 사용 이미지 45
 │  └─ spare/{img,audio}/   # 예비(미사용) 리소스: 이미지 1 + mp3 26 (tracked 보존)
-├─ source/notion_mystery_game_html/   # 원본 Notion 내보내기(.html) — tracked 보존
+├─ source/notion_mystery_game_html/   # 원본 Notion 내보내기(.html) — .gitignore(로컬만, 레포 제외)
 ├─ docs/                   # migration-map.csv, ost-credits.xlsx, soundtrack-README.txt
 └─ tools/check-assets.py   # 깨진 링크/고아 파일 검증
 ```
