@@ -159,7 +159,7 @@ a{color:var(--gold2);text-decoration:none}
 .content a.navlink, a.navlink{display:inline-flex;align-items:center;gap:8px;cursor:pointer;
   background:linear-gradient(180deg,rgba(40,30,18,.9),rgba(26,19,11,.9));border:1px solid var(--line);
   color:#f0e3c8 !important;border-radius:10px;padding:10px 15px;margin:5px 6px 5px 0;font-size:14.5px;transition:.18s;border-bottom:1px solid var(--line)}
-.content a.navlink::before{content:"›";color:var(--gold);font-size:18px;line-height:1}
+.content a.navlink::before{content:"›";color:var(--gold);font-size:18px;line-height:1}.content a.navlink.cluecard{display:flex;align-items:stretch;gap:0;padding:0;overflow:hidden;width:100%;max-width:440px;border-radius:12px;margin:7px 0}.content a.navlink.cluecard::before{content:none}.cluecard .cc-thumb{flex:0 0 88px;width:88px;align-self:stretch;min-height:74px;background-size:cover;background-position:center;background-color:#181109;display:flex;align-items:center;justify-content:center;font-size:26px;color:var(--gold)}.cluecard .cc-body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;gap:5px;padding:11px 14px}.cluecard .cc-title{font-size:15px;font-weight:600;color:#f0e3c8;line-height:1.25}.cluecard .cc-badge{font-size:11.5px;letter-spacing:.3px;color:var(--dim)}.cluecard .cc-badge.lock{color:#caa24c}.cluecard .cc-badge.open{color:#8fbf6f}.cluecard:hover .cc-title{color:#fff4d6}
 .content a.navlink:hover{border-color:var(--gold);color:#fff4d6 !important;transform:translateX(3px)}
 .content li>a.navlink{margin:3px 0}
 .content li{list-style:none}
@@ -519,6 +519,7 @@ function renderContent(id){
   h+='<div class="content">'+n.html+'</div>';
   el.innerHTML=h;
   bindNav();
+  upgradeClueCards();
   initInviteSlider();
   hideRecorderLink();
 }
@@ -548,6 +549,18 @@ function initInviteSlider(){
   box.querySelector('[data-invite-prev]').onclick=()=>show(current-1);
   box.querySelector('[data-invite-next]').onclick=()=>show(current+1);
   show(0);
+}
+function upgradeClueCards(){
+  el.querySelectorAll('a.navlink[data-target]').forEach(function(a){
+    if(a.classList.contains('cluecard')) return;
+    var id=a.getAttribute('data-target'); var n=N[id]; if(!n) return;
+    var im=a.querySelector('img'); var thumb=im?im.getAttribute('src'):firstImg(n.html);
+    var open=isUnlocked(id);
+    var badgeCls=n.locked?(open?'open':'lock'):'';
+    var badge=n.locked?(open?'✓ 열람 가능':'🔒 잠김'):'▶ 열람';
+    a.classList.add('cluecard');
+    a.innerHTML='<div class="cc-thumb"'+(thumb?(' style="background-image:url('+thumb+')"'):'')+'>'+(thumb?'':'📄')+'</div>'+'<div class="cc-body"><div class="cc-title">'+n.title+'</div><div class="cc-badge '+badgeCls+'">'+badge+'</div></div>';
+  });
 }
 function bindNav(){
   el.querySelectorAll('a.navlink').forEach(a=>{
