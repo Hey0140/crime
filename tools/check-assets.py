@@ -16,7 +16,8 @@ import os
 import sys
 import urllib.parse
 
-GAME = "game.html"
+# 에셋 참조가 흩어져 있는 파일들: game.html(폰트 @font-face 등) + game.json(데이터·노드 html 내 <img>)
+SCAN_FILES = ("game.html", "game.json")
 ASSET_EXTS = ("mp3", "png", "jpg", "jpeg", "webp", "gif", "svg", "ttf", "otf", "woff", "woff2")
 
 # 한글/이모지 경로가 콘솔 인코딩(cp949 등)에서 깨지지 않도록 강제 UTF-8 출력
@@ -40,8 +41,13 @@ def main():
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     os.chdir(root)
 
-    with open(GAME, encoding="utf-8", errors="replace") as f:
-        game = f.read()
+    game = ""
+    scanned = []
+    for fn in SCAN_FILES:
+        if os.path.exists(fn):
+            with open(fn, encoding="utf-8", errors="replace") as f:
+                game += "\n" + f.read()
+            scanned.append(fn)
 
     assets = set()
     for ext in ASSET_EXTS:
@@ -75,7 +81,7 @@ def main():
         if not os.path.exists(dec):
             broken.append(dec)
 
-    print("게임 HTML:", GAME)
+    print("스캔 파일:", ", ".join(scanned))
     print("디스크 자산 총:", len(assets), "| 고아(미참조):", len(orphans), "| 깨진 링크:", len(broken))
     print()
     print("=== 깨진 링크 (참조됐는데 디스크에 없음) — 0이어야 함 ===")
