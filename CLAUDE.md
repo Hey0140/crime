@@ -35,7 +35,7 @@
 
 6. **`assets/spare/`는 손대지 않는다.** 예비(미사용) 리소스이며 게임과 무관하지만 보존 목적이니 삭제·수정하지 말 것. (원본 Notion 저작 자료 `source/`는 `.gitignore` 처리되어 레포 밖 로컬에만 있음 — 건드릴 일 없음.)
 
-7. 리팩토링 경위·구조 결정은 `REFACTORING_PROPOSAL.md`, 경로 변경 매핑은 `docs/migration-map.csv` 참고.
+7. 리팩토링 경위·구조 결정은 `docs/REFACTORING_PROPOSAL.md`, 경로 변경 매핑은 `docs/migration-map.csv` 참고.
 
 ---
 
