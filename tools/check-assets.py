@@ -16,7 +16,7 @@ import os
 import sys
 import urllib.parse
 
-GAME = "죽은자의_생일파티_게임.html"
+GAME = "game.html"
 ASSET_EXTS = ("mp3", "png", "jpg", "jpeg", "webp", "gif", "svg", "ttf", "otf", "woff", "woff2")
 
 # 한글/이모지 경로가 콘솔 인코딩(cp949 등)에서 깨지지 않도록 강제 UTF-8 출력
