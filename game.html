@@ -160,7 +160,7 @@ a{color:var(--gold2);text-decoration:none}
   background:linear-gradient(180deg,rgba(40,30,18,.9),rgba(26,19,11,.9));border:1px solid var(--line);
   color:#f0e3c8 !important;border-radius:10px;padding:10px 15px;margin:5px 6px 5px 0;font-size:14.5px;transition:.18s;border-bottom:1px solid var(--line)}
 .content a.navlink::before{content:"›";color:var(--gold);font-size:18px;line-height:1}
-.content a.navlink:hover{border-color:var(--gold);color:#fff4d6 !important;transform:translateX(3px)}
+.content a.navlink:hover{border-color:var(--gold);color:#fff4d6 !important;transform:translateX(3px)}.content .ev{display:flex;align-items:center;gap:12px;width:100%;max-width:460px;text-align:left;background:linear-gradient(180deg,rgba(38,28,17,.85),rgba(24,17,10,.85));border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0;cursor:pointer;transition:.16s;color:#f0e3c8;font-size:14.5px}.content .ev::before{content:none}.content .ev:hover{border-color:var(--gold);transform:translateX(2px)}.content button.ev{font:inherit}.ev .ev-ic{flex:0 0 38px;width:38px;height:38px;display:flex;align-items:center;justify-content:center;font-size:20px;background:#181109;border-radius:9px;border:1px solid var(--line)}.ev .ev-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}.ev .ev-name{font-weight:600;color:#f3e6cb;line-height:1.25}.ev .ev-meta{font-size:11.5px;color:var(--dim)}.ev .ev-go{flex:0 0 auto;color:var(--gold);font-size:18px;opacity:.7}#lightbox .lb-inner{max-width:min(92vw,820px);text-align:center;padding:10px}#lightbox .lb-inner img{max-width:100%;max-height:76vh;border-radius:10px;border:1px solid var(--line);box-shadow:0 18px 50px rgba(0,0,0,.6)}#lightbox .lb-cap{margin-top:12px;color:var(--gold2);font-size:15px}#lightbox .lb-close{margin-top:14px}
 .content li>a.navlink{margin:3px 0}
 .content li{list-style:none}
 .content ul:has(a.navlink){padding-left:0}
@@ -337,6 +337,13 @@ a{color:var(--gold2);text-decoration:none}
     </div>
   </div>
 </div>
+<div id="lightbox" class="overlay hidden">
+  <div class="lb-inner">
+    <img id="lbImg" alt="">
+    <div class="lb-cap" id="lbCap"></div>
+    <button class="lockbtn lb-close" id="lbClose">닫기</button>
+  </div>
+</div>
 <div class="toast" id="toast"></div>
 <audio id="aud0" loop></audio>
 <audio id="aud1" loop></audio>
@@ -429,9 +436,80 @@ function lockHint(n){
 // ---- helpers ----
 function firstImg(html){const m=html&&html.match(/<img[^>]+src="([^"]+)"/);return m?m[1]:null;}
 function isUnlocked(id){return !N[id].locked || unlocked[id];}
+function clueType(n){
+  var t=n.title||'', h=n.html||'';
+  var txt=h.replace(/<[^>]+>/g,'');
+  var strongs=(h.match(/<strong>/g)||[]).length;
+  var chats=(txt.match(/\d\d:\d\d/g)||[]).length;
+  var imgs=(h.match(/<img/g)||[]).length;
+  var L=txt.length;
+  function kw(){for(var i=0;i<arguments.length;i++){if(t.indexOf(arguments[i])>=0)return true;}return false;}
+  if(kw('CCTV','영상','캡처','녹화')) return 'VIDEO';
+  if(kw('녹음')||txt.indexOf('녹음 종료')>=0) return 'AUDIO';
+  if(kw('메신저','대화','문자','메시지')||(chats>=6&&strongs>=6)) return 'CHAT';
+  var official=kw('조사','감정','점검','로그','보고','검토','설명서')||t.indexOf('접근 기록')>=0||t.indexOf('명단')>=0;
+  if(!official&&(kw('다이어리','일기','편지','카드','수첩')||t.indexOf('개인 메모')>=0||t.indexOf('000 000 메모')>=0||/에게$/.test(t)||/지$/.test(t))) return 'NOTE';
+  if(kw('사진','초대장')||(imgs>=1&&L<60)) return 'PHOTO';
+  return 'DOC';
+}
+var TYPE_META={PHOTO:['📷','현장·물품'],DOC:['📄','문서'],NOTE:['📝','메모'],CHAT:['💬','대화'],AUDIO:['🎙️','녹음'],VIDEO:['🎞️','영상']};
+function evCardHTML(ic,label,name,ls){
+  return '<span class="ev-ic">'+ic+'</span><span class="ev-main"><span class="ev-name">'+name+'</span><span class="ev-meta">'+label+ls+'</span></span><span class="ev-go">›</span>';
+}
+function evPhotoCard(title,src){
+  var b=document.createElement('button'); b.type='button'; b.className='ev ev-photo';
+  b.innerHTML=evCardHTML('📷','현장·물품',title,'');
+  b.onclick=function(){ openLightbox(src,title); };
+  return b;
+}
+function openLightbox(src,cap){
+  var lb=document.getElementById('lightbox'); if(!lb) return;
+  document.getElementById('lbImg').src=src;
+  document.getElementById('lbCap').textContent=cap||'';
+  lb.classList.remove('hidden');
+}
+function renderClues(id){
+  var c=el.querySelector('.content'); if(!c) return;
+  if(DATA.locIds.indexOf(id)>=0){
+    var kids=Array.prototype.slice.call(c.childNodes);
+    var out=document.createDocumentFragment();
+    var i=0;
+    while(i<kids.length){
+      var node=kids[i];
+      var tag=node.nodeType===1?node.tagName.toLowerCase():'';
+      if(tag==='h3'||tag==='h4'){
+        var sect=[], j=i+1;
+        while(j<kids.length){ var nt=kids[j].nodeType===1?kids[j].tagName.toLowerCase():''; if(nt==='h1'||nt==='h2'||nt==='h3'||nt==='h4') break; sect.push(kids[j]); j++; }
+        var img=null, link=false;
+        sect.forEach(function(s){ if(s.querySelector){ var q=s.querySelector('img'); if(q&&!img)img=q; if(s.querySelector('a.navlink'))link=true; } });
+        if(img&&!link){ out.appendChild(evPhotoCard((node.textContent||'').trim()||'현장 사진', img.getAttribute('src'))); i=j; continue; }
+        if(link&&!img){ sect.forEach(function(s){ out.appendChild(s); }); i=j; continue; }
+        out.appendChild(node); i++; continue;
+      }
+      if(tag==='p' && node.querySelector('img') && !node.querySelector('a')){
+        out.appendChild(evPhotoCard('현장 사진', node.querySelector('img').getAttribute('src'))); i++; continue;
+      }
+      out.appendChild(node); i++;
+    }
+    while(c.firstChild) c.removeChild(c.firstChild);
+    c.appendChild(out);
+  }
+  c.querySelectorAll('a.navlink[data-target]').forEach(function(a){
+    var tid=a.getAttribute('data-target'); var n=N[tid]; if(!n) return;
+    var ty=clueType(n); var m=TYPE_META[ty]||TYPE_META.DOC;
+    var ls=n.locked?(isUnlocked(tid)?' · ✓ 열람':' · 🔒 잠김'):'';
+    a.className='ev ev-link';
+    a.innerHTML=evCardHTML(m[0],m[1],n.title,ls);
+    var pp=a.parentNode; if(pp&&pp.tagName==='P'&&pp.childNodes.length===1){ pp.parentNode.replaceChild(a,pp); }
+  });
+}
+(function(){ var lb=document.getElementById('lightbox'); if(!lb) return;
+  var b=document.getElementById('lbClose'); if(b) b.onclick=function(){ lb.classList.add('hidden'); };
+  lb.addEventListener('click',function(e){ if(e.target===lb) lb.classList.add('hidden'); });
+})();
 const RECORDER_ID='37281d1c9e1480009b17e98839289adb';
 function recorderReady(){return lockedIds.every(function(id){return id===RECORDER_ID||unlocked[id];});}
-function hideRecorderLink(){if(recorderReady())return;var rl=el.querySelector('a.navlink[data-target="'+RECORDER_ID+'"]');if(rl){var p=rl.closest('p')||rl;p.style.display='none';}}
+function hideRecorderLink(){if(recorderReady())return;var rl=el.querySelector('[data-target="'+RECORDER_ID+'"]');if(rl){var p=rl.closest('p')||rl;p.style.display='none';}}
 function maybeRevealRecorder(){if(recorderReady()&&!localStorage.getItem('dsbp_recorder_revealed')){try{localStorage.setItem('dsbp_recorder_revealed','1');}catch(e){}var m=$('#recorderModal');if(m)m.classList.remove('hidden');}}
 function trigTrack(id){ return (DATA.triggers && DATA.triggers[id]) || null; }
 function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
@@ -519,6 +597,7 @@ function renderContent(id){
   h+='<div class="content">'+n.html+'</div>';
   el.innerHTML=h;
   bindNav();
+  renderClues(id);
   initInviteSlider();
   hideRecorderLink();
 }
@@ -700,7 +779,7 @@ $('#startBtn').onclick=()=>{
 var introMusicStarted=false;
 function startIntroMusic(){ if(introMusicStarted) return; introMusicStarted=true; A.ready=true; A.els.forEach(a=>a.volume=0); playTrack(DATA.introTheme); }
 ['pointerdown','wheel','touchstart','keydown'].forEach(ev=>$('#intro').addEventListener(ev,startIntroMusic,{once:true,passive:true}));
-document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ $('#accuseModal').classList.add('hidden'); var _rm2=$('#recorderModal'); if(_rm2) _rm2.classList.add('hidden'); } const st=$('#charStage'); if(st){ if(e.key==='ArrowLeft'){$('#charPrev').click();} else if(e.key==='ArrowRight'){$('#charNext').click();} } });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ $('#accuseModal').classList.add('hidden'); var _rm2=$('#recorderModal'); if(_rm2) _rm2.classList.add('hidden'); var _lb=$('#lightbox'); if(_lb) _lb.classList.add('hidden'); } const st=$('#charStage'); if(st){ if(e.key==='ArrowLeft'){$('#charPrev').click();} else if(e.key==='ArrowRight'){$('#charNext').click();} } });
 })();
 </script>
 </body>
