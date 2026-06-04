@@ -1,8 +1,8 @@
 # 리팩토링 제안서 — 《죽은 자의 생일파티》
 
-> 작성일: 2026-06-04 · 상태: **제안(미실행)** · 대상 브랜치: `main`
+> 작성일: 2026-06-04 · 상태: **Phase 0~5 실행 완료** · 작업 브랜치: `refactor/restructure` · 롤백 태그: `pre-refactor`
 
-이 문서는 현재 레포의 구조를 정리하기 위한 **제안서**입니다. 실제 파일 이동/삭제/수정은 포함하지 않으며, 합의 후 단계별로 진행하는 것을 전제로 합니다.
+이 문서는 레포 구조 정리 계획서이자 실행 기록입니다. 아래 1~9장은 계획 당시 분석이며, **실행 결과는 10장**에 정리되어 있습니다. 결정 사항: 파일명 의미있는 ASCII화 / 예비 리소스·Notion 원본 모두 레포 tracked 보관 / Phase 4(RES 맵)는 인코딩 문제 해소로 생략.
 
 ---
 
@@ -258,3 +258,42 @@ pull한 변경(`95090fe` Merge / `ea5bdc9` `fix : 도이준 파일 수정`, auth
 **새로 식별된 리스크 — 동시 작업 충돌**
 - 이 레포는 **여러 명이 게임 본체(`죽은자의_생일파티_게임.html`)에 콘텐츠 PR**을 올리고 있다(PR #1이 그 예). 본체는 한 줄 minified라 **줄 단위 머지가 거의 불가능** → 경로 일괄 치환 같은 대규모 변경은 진행 중인 콘텐츠 PR과 **충돌이 확정적**.
 - 대응: Phase 2~4(본체 경로 치환)는 **콘텐츠 PR이 비는 시점에 짧게, 단독으로** 처리하고 즉시 머지. Phase 1(죽은 파일 삭제)·Phase 0(스크립트/gitignore)은 본체를 안 건드리므로 충돌 위험이 낮아 **먼저 진행 가능**.
+
+---
+
+## 10. 실행 결과 (Phase 0~5 완료)
+
+브랜치 `refactor/restructure`, 롤백 태그 `pre-refactor`. 각 단계 후 `tools/check-assets.py`로 **깨진 링크 0** 확인.
+
+### 최종 구조
+```
+crime/
+├─ index.html              # 진입점 → game.html 리다이렉트
+├─ game.html               # 게임 본체(구 죽은자의_생일파티_게임.html)
+├─ assets/
+│  ├─ fonts/               # MaruBuri TTF 5
+│  ├─ audio/               # 사용 BGM 25
+│  ├─ img/{bg,characters,invitations,clues}/ + cover.png   # 사용 이미지 45
+│  └─ spare/{img,audio}/   # 예비(미사용) 리소스: 이미지 1 + mp3 26 (tracked 보존)
+├─ source/notion_mystery_game_html/   # 원본 Notion 내보내기(.html) — tracked 보존
+├─ docs/                   # migration-map.csv, ost-credits.xlsx, soundtrack-README.txt
+└─ tools/check-assets.py   # 깨진 링크/고아 파일 검증
+```
+
+### 커밋
+| 단계 | 내용 |
+|---|---|
+| Phase 0 | 문서·검증 스크립트·gitignore(`.idea/`,`archive/`) |
+| Phase 1 | 미사용 OTF 폰트 5개 삭제 (유일한 삭제) |
+| Phase 2 | 사용 이미지 45 → `assets/img`(ASCII), 경로 114곳 치환, 예비 이미지·Notion 원본 격리 |
+| Phase 3 | 폰트·음원 → `assets/{fonts,audio}`, 미사용 mp3 26 → `assets/spare/audio`, 메타 → `docs/` |
+| Phase 5 | `game.html` 리네임, `index.html`·검증 스크립트 갱신 |
+| Phase 4 | **생략** — ASCII 경로화로 인코딩 문제가 해소되어 RES 맵 불필요 |
+
+### 핵심 기법
+- 게임 HTML의 리소스 참조는 인코딩 혼재(percent/리터럴) → **본문에 실재하는 raw 문자열만 추출해 그대로 치환**, 인코딩 추측 배제.
+- 모든 파일 이동은 git이 100% rename으로 추적(히스토리 보존).
+- 단계마다 `check-assets.py` 깨진 링크 0 + `DATA` JSON 파싱 검증.
+
+### 남은 수동 검증 (권장)
+- 로컬 HTTP 서버(`python -m http.server`)로 한 바퀴 플레이: 각 방 배경·인물·초대장·단서 이미지 + BGM 재생 확인. (자동 검증은 경로 무결성까지만 보장)

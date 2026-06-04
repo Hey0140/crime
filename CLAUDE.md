@@ -6,21 +6,22 @@
 
 ## 프로젝트 개요
 
-- **진입점**: `index.html` → meta refresh + `location.replace`로 `죽은자의_생일파티_게임.html`로 리다이렉트.
-- **게임 본체**: `죽은자의_생일파티_게임.html` **단일 파일**. 모든 스토리·방·단서 HTML이 `<script>` 안의 JS 데이터(`DATA`/`N` 객체)로 **인라인 내장**되어 있다. 빌드 단계·번들러·패키지 매니저 없음. 그냥 정적 HTML.
-- **리소스(디스크에서 로드하는 것)**:
-  - `fonts/MaruBuriTTF/*.ttf` — `MaruBuriOTF/`는 미사용
-  - `soundtrack/*.mp3` — 일부만 사용
-  - `notion_mystery_game_html/new_background_images/*.png` — 방 배경
-  - `notion_mystery_game_html/《죽은 자의 생일파티》/**/*.png` — 인물·초대장·단서 이미지
-  - 어떤 파일이 실제로 참조되는지는 외워두지 말고 매번 게임 HTML을 grep해서 확인할 것(아래 4번).
-- **`notion_mystery_game_html/`의 정체**: 초기 버전(Notion 내보내기) 원본. 게임 본체는 이 폴더의 **이미지 PNG만** 골라 참조하며, 그 안의 `.html`과 `index.html`은 **참조하지 않는다**(원본 저작 자료).
+- **진입점**: `index.html` → meta refresh + `location.replace`로 `game.html`로 리다이렉트.
+- **게임 본체**: `game.html` **단일 파일**. 모든 스토리·방·단서 HTML이 `<script>` 안의 JS 데이터(`DATA`/`N` 객체)로 **인라인 내장**되어 있다. 빌드 단계·번들러·패키지 매니저 없음. 그냥 정적 HTML.
+- **리소스 폴더 구조** (리팩토링 완료, 전부 ASCII 경로):
+  - `assets/fonts/*.ttf` — MaruBuri TTF
+  - `assets/audio/*.mp3` — 사용 중 BGM
+  - `assets/img/{bg,characters,invitations,clues}/*.png`, `assets/img/cover.png` — 게임 이미지
+  - `assets/spare/{img,audio}/` — **예비(미사용) 리소스**. 게임이 참조하지 않지만 향후 단서/BGM 후보로 tracked 보관. 삭제 금지.
+  - `source/notion_mystery_game_html/` — 초기 버전 Notion 내보내기 **원본 저작 자료**(.html). 게임과 무관, 참조 안 함. 손대지 말 것.
+  - `docs/` — 매핑표(`migration-map.csv`), OST 출처(`ost-credits.xlsx`, `soundtrack-README.txt`)
+  - 어떤 파일이 실제로 참조되는지는 외워두지 말고 매번 `tools/check-assets.py`로 확인할 것(아래 4번).
 
 ## 이 레포에서 작업할 때 반드시 지킬 것
 
-1. **리소스 경로 인코딩이 일관되지 않다.** 같은 이미지라도 참조 문자열이 ① percent-encoded 전체경로(`%E3%80%8A…`), ② 리터럴 유니코드 전체경로(`…/도세아 작업실 🔒/초대장/…png`), ③ 파일명 단위 등 **케이스마다 다르게** 박혀 있다. 경로를 옮기거나 이름을 바꿀 때는 **모든 인코딩 형태를 찾아** 치환해야 한다. 단순 1회 찾아바꾸기는 깨진 링크를 남긴다.
+1. **새 리소스는 반드시 ASCII 경로로 추가한다.** 활성 리소스(`assets/`)는 리팩토링으로 전부 ASCII가 됐다. 공백·한글·`《》`·🔒 이모지가 섞인 경로는 percent/리터럴 인코딩이 케이스마다 달라져 깨진 링크를 부른다(과거 `notion_mystery_game_html/…` 구조의 문제였음 → `source/`에 그대로 보존돼 있으니 그 안의 경로 인코딩은 참고만).
 
-2. **경로에 공백·한글·`《》`·🔒 이모지가 섞여 있다.** 새 리소스를 추가할 때는 가능하면 **ASCII 파일명**을 쓰고, 기존 경로를 건드릴 일이 있으면 인코딩 깨짐에 주의한다.
+2. **경로 일괄 변경은 "실재 문자열" 기준으로 한다.** 게임 HTML의 참조를 옮길 때는 인코딩 형태를 추측하지 말고, 본문에 실제로 박힌 raw 문자열을 추출해 그것만 치환한 뒤 `tools/check-assets.py`로 깨진 링크 0을 확인한다.
 
 3. **테스트는 로컬 HTTP 서버로 한다.** `file://`로 직접 열면 브라우저가 한글/인코딩 경로 리소스를 막아 이미지·음원이 안 뜰 수 있다.
    ```bash
@@ -32,9 +33,9 @@
 
 5. **거대 단일 HTML이다.** 본체를 편집할 때는 인라인 JS 데이터 구조(`DATA`/`N`, 방 id, `locked`/`answers` 등 게임 로직)를 깨지 않도록 국소적으로 수정한다. 대규모 코드 분리(JS/CSS 외부화)는 별도 합의된 과제로만 진행한다.
 
-6. **`notion_mystery_game_html/`의 `.html`은 손대지 않는다.** 게임과 무관한 원본 자료다. 정리/삭제는 별도 리팩토링 과제(`REFACTORING_PROPOSAL.md`)에서 합의 후 진행.
+6. **`source/`와 `assets/spare/`는 손대지 않는다.** `source/`는 원본 Notion 저작 자료, `assets/spare/`는 예비 리소스다. 둘 다 게임과 무관하며 보존 목적이니 삭제·수정하지 말 것.
 
-7. 자세한 정리/구조 개편 계획은 `REFACTORING_PROPOSAL.md` 참고. 그 작업은 합의 전까지 실행하지 않는다.
+7. 리팩토링 경위·구조 결정은 `REFACTORING_PROPOSAL.md`, 경로 변경 매핑은 `docs/migration-map.csv` 참고.
 
 ---
 
