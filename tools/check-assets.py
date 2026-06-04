@@ -16,8 +16,8 @@ import os
 import sys
 import urllib.parse
 
-# 에셋 참조가 흩어져 있는 파일들: game.html(폰트 @font-face 등) + game.json(데이터·노드 html 내 <img>)
-SCAN_FILES = ("game.html", "game.json")
+# 에셋 참조가 흩어져 있는 파일들: game.html(폰트 @font-face 등) + game-data.js(데이터·노드 html 내 <img>)
+SCAN_FILES = ("game.html", "game-data.js")
 ASSET_EXTS = ("mp3", "png", "jpg", "jpeg", "webp", "gif", "svg", "ttf", "otf", "woff", "woff2")
 
 # 한글/이모지 경로가 콘솔 인코딩(cp949 등)에서 깨지지 않도록 강제 UTF-8 출력
