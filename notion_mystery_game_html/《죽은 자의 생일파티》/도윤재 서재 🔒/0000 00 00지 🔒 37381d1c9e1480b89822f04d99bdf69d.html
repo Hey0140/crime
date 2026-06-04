@@ -1,0 +1,57 @@
+﻿<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>0000 00 00지 🔒</title><style>
+:root{--bg:#090908;--panel:#151210;--text:#eee8dc;--muted:#b9aa91;--gold:#c8a767;--line:#40362a;--danger:#8d2e2e;}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at top,#21180f,#090908 55%);color:var(--text);font-family:Inter,Apple SD Gothic Neo,Malgun Gothic,sans-serif;line-height:1.75;}
+a{color:#e4c77e;text-decoration:none;border-bottom:1px solid rgba(228,199,126,.35)} a:hover{color:#fff2bd}.wrap{max-width:980px;margin:0 auto;padding:44px 22px 90px}.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:24px;color:var(--muted);font-size:14px}.home{border:1px solid var(--line);padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.03)}.page{background:rgba(18,15,13,.92);border:1px solid var(--line);border-radius:22px;padding:34px;box-shadow:0 20px 80px rgba(0,0,0,.35)}
+h1{font-size:36px;line-height:1.2;margin:0 0 24px;border-bottom:1px solid var(--line);padding-bottom:16px}h2{font-size:25px;margin-top:34px;color:#f4d891}h3{font-size:19px;margin-top:28px;color:#d9c9a9}p{margin:12px 0}ul,ol{padding-left:24px}li{margin:7px 0}blockquote,.aside{border-left:4px solid var(--gold);background:rgba(200,167,103,.08);padding:14px 18px;border-radius:12px;margin:18px 0;color:#eadfca}pre{background:#080706;border:1px solid #332a22;border-radius:12px;padding:16px;overflow:auto}code{font-family:Consolas,monospace;color:#ffe0a1}hr{border:0;border-top:1px solid var(--line);margin:28px 0}img{display:block;max-width:100%;height:auto;margin:18px auto;border-radius:16px;border:1px solid #332a22;box-shadow:0 16px 48px rgba(0,0,0,.32);object-fit:contain}table{width:100%;border-collapse:collapse;margin:18px 0}td,th{border:1px solid var(--line);padding:9px}.lockbox{border:1px solid rgba(200,167,103,.65);background:linear-gradient(135deg,rgba(70,43,19,.75),rgba(18,15,13,.95));padding:22px;border-radius:18px;margin:0 0 28px}.lock-title{font-size:22px;font-weight:800;color:#ffe0a1;margin-bottom:8px}.lock-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.pw-input{flex:1;min-width:220px;background:#080706;border:1px solid #5b4a36;color:white;border-radius:12px;padding:13px 14px;font-size:16px}.btn{background:var(--gold);border:0;color:#16110b;font-weight:800;border-radius:12px;padding:13px 18px;cursor:pointer}.hint{font-size:13px;color:var(--muted);margin-top:8px}.error{color:#ff9b9b;display:none;margin-top:10px}.locked-content{display:none}.locked .locked-content{display:none}.unlocked .locked-content{display:block}.unlocked .lockbox{display:none}.badge{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:4px 9px;color:var(--muted)}
+@media(max-width:640px){.page{padding:22px;border-radius:16px}h1{font-size:28px}.wrap{padding:24px 12px 70px}.lock-row{display:block}.pw-input,.btn{width:100%;margin-top:8px}}
+</style><script>
+function normPw(s){return (s||'').toString().replace(/월|일|년/g,'').replace(/[^0-9A-Za-z가-힣]/g,'').toLowerCase();}
+function unlockPage(id, answers){
+  const input=document.getElementById('pw-'+id); const err=document.getElementById('err-'+id);
+  const v=normPw(input.value);
+  if(answers.map(normPw).includes(v)){
+    document.body.classList.add('unlocked'); document.body.classList.remove('locked');
+    try{sessionStorage.setItem('unlocked:'+location.pathname,'1')}catch(e){}
+  }else{err.style.display='block'; input.focus();}
+}
+function pwShape(answer){
+  const s=normPw(answer);
+  const kind=/^[0-9]+$/.test(s)?'숫자':/^[a-z]+$/.test(s)?'영문':/^[0-9a-z]+$/.test(s)?'영문+숫자':'문자';
+  return kind+' '+s.length+'자리';
+}
+function addPwHints(){
+  document.querySelectorAll('.lockbox').forEach(box=>{
+    const btn=box.querySelector('.btn[onclick^="unlockPage"]'); const hint=box.querySelector('.hint');
+    if(!btn||!hint||hint.dataset.shapeAdded==='1')return;
+    const m=(btn.getAttribute('onclick')||'').match(/unlockPage\("[^"]+",(\[[^\]]+\])\)/);
+    if(!m)return;
+    try{const answers=JSON.parse(m[1]); if(answers.length){hint.textContent='비밀번호 형식: '+pwShape(answers[0])+'입니다. '+hint.textContent; hint.dataset.shapeAdded='1';}}catch(e){}
+  });
+}
+window.addEventListener('DOMContentLoaded',()=>{try{if(sessionStorage.getItem('unlocked:'+location.pathname)==='1'){document.body.classList.add('unlocked');document.body.classList.remove('locked')}}catch(e){}; addPwHints(); document.querySelectorAll('.pw-input').forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')i.nextElementSibling.click()}));});
+</script></head><body class="locked"><main class="wrap"><div class="topbar"><a class="home" href="../../index.html">← 사건 메인으로</a><span class="badge">추리 게임 HTML</span></div><article class="page"><section class="lockbox"><div class="lock-title">🔒 입장 비밀번호</div><div>이 문서는 잠겨 있습니다. 단서로 얻은 비밀번호를 입력하면 내용이 열립니다.</div><div class="lock-row"><input class="pw-input" id="pw-28218390" type="password" placeholder="비밀번호 입력" autocomplete="off"><button class="btn" onclick='unlockPage("28218390",["891203"])'>입장</button></div><div class="hint">입력 시 공백, 점, 하이픈, ‘월/일’ 표기는 자동으로 정리됩니다.</div><div class="error" id="err-28218390">비밀번호가 맞지 않습니다.</div></section><div class="locked-content"><h1>0000 00 00지 🔒</h1>
+<h1>친자확인 검사 결과지</h1>
+<p>문서명: 유전자 친자관계 확인 결과 통지서</p>
+<p>검사기관: 한서유전의학연구소</p>
+<p>의뢰일자: 2026년 12월 13일</p>
+<p>결과일자: 2026년 12월 15일</p>
+<p>문서 상태: 사본</p>
+<p>의뢰인: 도윤재</p>
+<hr />
+<h2>1. 검사 대상</h2>
+<p>검체 A: 도윤재</p>
+<p>검체 B: 도진명</p>
+<p>검사 목적: 생물학적 친자관계 확인</p>
+<p>검사 방식: STR 유전자 마커 비교 분석</p>
+<p>비고: 본 문서는 극 중 소품용 설정 문서임</p>
+<hr />
+<h2>2. 검사 결과 요약</h2>
+<p>검체 A와 검체 B의 유전자 마커 비교 결과, 생물학적 친자관계를 지지하는 유전적 일치 양상이 확인되지 않음.</p>
+<p>친자관계 가능성: 매우 낮음</p>
+<p>친자관계 추정 확률: 0.03% 미만</p>
+<p><strong>결론: 생물학적 부자 관계로 보기 어려움</strong></p>
+<hr />
+<h2>3. 세부 소견</h2>
+<p>일부 유전자 좌위에서 부자 관계일 경우 기대되는 일치 패턴이 확인되지 않았다.</p>
+<p><strong>검사 결과상 검체 B가 검체 A의 생물학적 부친일 가능성은 극히 낮은 것으로 판단된다.</strong></p>
+</div></article></main></body></html>

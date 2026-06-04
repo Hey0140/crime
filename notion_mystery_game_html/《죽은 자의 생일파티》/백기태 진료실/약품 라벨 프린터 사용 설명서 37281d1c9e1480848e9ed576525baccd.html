@@ -1,0 +1,112 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>약품 라벨 프린터 사용 설명서</title><style>
+:root{--bg:#090908;--panel:#151210;--text:#eee8dc;--muted:#b9aa91;--gold:#c8a767;--line:#40362a;--danger:#8d2e2e;}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at top,#21180f,#090908 55%);color:var(--text);font-family:Inter,Apple SD Gothic Neo,Malgun Gothic,sans-serif;line-height:1.75;}
+a{color:#e4c77e;text-decoration:none;border-bottom:1px solid rgba(228,199,126,.35)} a:hover{color:#fff2bd}.wrap{max-width:980px;margin:0 auto;padding:44px 22px 90px}.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:24px;color:var(--muted);font-size:14px}.home{border:1px solid var(--line);padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.03)}.page{background:rgba(18,15,13,.92);border:1px solid var(--line);border-radius:22px;padding:34px;box-shadow:0 20px 80px rgba(0,0,0,.35)}
+h1{font-size:36px;line-height:1.2;margin:0 0 24px;border-bottom:1px solid var(--line);padding-bottom:16px}h2{font-size:25px;margin-top:34px;color:#f4d891}h3{font-size:19px;margin-top:28px;color:#d9c9a9}p{margin:12px 0}ul,ol{padding-left:24px}li{margin:7px 0}blockquote,.aside{border-left:4px solid var(--gold);background:rgba(200,167,103,.08);padding:14px 18px;border-radius:12px;margin:18px 0;color:#eadfca}pre{background:#080706;border:1px solid #332a22;border-radius:12px;padding:16px;overflow:auto}code{font-family:Consolas,monospace;color:#ffe0a1}hr{border:0;border-top:1px solid var(--line);margin:28px 0}img{display:block;max-width:100%;height:auto;margin:18px auto;border-radius:16px;border:1px solid #332a22;box-shadow:0 16px 48px rgba(0,0,0,.32);object-fit:contain}table{width:100%;border-collapse:collapse;margin:18px 0}td,th{border:1px solid var(--line);padding:9px}.lockbox{border:1px solid rgba(200,167,103,.65);background:linear-gradient(135deg,rgba(70,43,19,.75),rgba(18,15,13,.95));padding:22px;border-radius:18px;margin:0 0 28px}.lock-title{font-size:22px;font-weight:800;color:#ffe0a1;margin-bottom:8px}.lock-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.pw-input{flex:1;min-width:220px;background:#080706;border:1px solid #5b4a36;color:white;border-radius:12px;padding:13px 14px;font-size:16px}.btn{background:var(--gold);border:0;color:#16110b;font-weight:800;border-radius:12px;padding:13px 18px;cursor:pointer}.hint{font-size:13px;color:var(--muted);margin-top:8px}.error{color:#ff9b9b;display:none;margin-top:10px}.locked-content{display:none}.locked .locked-content{display:none}.unlocked .locked-content{display:block}.unlocked .lockbox{display:none}.badge{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:4px 9px;color:var(--muted)}
+@media(max-width:640px){.page{padding:22px;border-radius:16px}h1{font-size:28px}.wrap{padding:24px 12px 70px}.lock-row{display:block}.pw-input,.btn{width:100%;margin-top:8px}}
+</style><script>
+function normPw(s){return (s||'').toString().replace(/월|일|년/g,'').replace(/[^0-9A-Za-z가-힣]/g,'').toLowerCase();}
+function unlockPage(id, answers){
+  const input=document.getElementById('pw-'+id); const err=document.getElementById('err-'+id);
+  const v=normPw(input.value);
+  if(answers.map(normPw).includes(v)){
+    document.body.classList.add('unlocked'); document.body.classList.remove('locked');
+    try{sessionStorage.setItem('unlocked:'+location.pathname,'1')}catch(e){}
+  }else{err.style.display='block'; input.focus();}
+}
+window.addEventListener('DOMContentLoaded',()=>{try{if(sessionStorage.getItem('unlocked:'+location.pathname)==='1'){document.body.classList.add('unlocked');document.body.classList.remove('locked')}}catch(e){}; document.querySelectorAll('.pw-input').forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')i.nextElementSibling.click()}));});
+</script></head><body class="unlocked"><main class="wrap"><div class="topbar"><a class="home" href="../../index.html">← 사건 메인으로</a><span class="badge">추리 게임 HTML</span></div><article class="page"><h1>약품 라벨 프린터 사용 설명서</h1>
+<h1>6. 약품 라벨 프린터 사용 설명서</h1>
+<p>문서명: MED-LABEL Mini 220 사용 설명서</p>
+<p>비치 위치: VIP 약품실 라벨 프린터 옆</p>
+<p>문서 상태: 사용 흔적 있음 / 일부 페이지 접힘</p>
+<hr />
+<h2>1. 장비 개요</h2>
+<p>MED-LABEL Mini 220은 약품 용기, 보관 트레이, 임시 처방 봉투에 부착하는 라벨을 출력하는 소형 라벨 프린터이다.</p>
+<p>사용 목적:</p>
+<ul>
+<li>약품명 표기</li>
+<li>환자명 표기</li>
+<li>복용 시간 표기</li>
+<li>보관 위치 표기</li>
+<li>유효기한 표기</li>
+<li>임시 처방 코드 출력</li>
+</ul>
+<hr />
+<h2>2. 기본 출력 방식</h2>
+<p>라벨 출력은 두 가지 방식으로 가능하다.</p>
+<h3>A. 등록 사용자 출력</h3>
+<p>의료진 개인 계정으로 로그인하여 출력한다.</p>
+<p>이 경우 출력 로그에 사용자 이름이 남는다.</p>
+<h3>B. 게스트 출력</h3>
+<p>약품실 내부 네트워크에 연결된 상태에서 임시 라벨을 출력한다.</p>
+<p>이 경우 출력 로그에는 사용자 이름이 남지 않고, “GUEST PRINT”로 기록된다.</p>
+<p>게스트 출력은 응급 상황에서 빠르게 라벨을 출력하기 위해 허용된 기능이다.</p>
+<hr />
+<h2>3. 게스트 출력 제한사항</h2>
+<p>게스트 출력 시 다음 정보는 자동 기록된다.</p>
+<ul>
+<li>출력 시각</li>
+<li>라벨 양식 번호</li>
+<li>프린터 번호</li>
+<li>출력 매수</li>
+<li>연결된 단말기 번호</li>
+</ul>
+<p>단, 사용자의 개인 이름은 기록되지 않는다.</p>
+<p>주의:</p>
+<p>게스트 출력 기록만으로 실제 출력자를 특정할 수 없다.</p>
+<p>약품실 출입 기록, CCTV, 지문, 라벨 부착 흔적 등과 함께 확인해야 한다.</p>
+<hr />
+<h2>4. 최근 출력 로그 예시</h2>
+<table>
+<thead>
+<tr>
+  <th>출력 시각</th>
+  <th>출력 방식</th>
+  <th>라벨 양식</th>
+  <th>출력 매수</th>
+  <th>사용자</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>18:21</td>
+  <td>등록 사용자</td>
+  <td>일반 처방 라벨</td>
+  <td>2</td>
+  <td>백기태</td>
+</tr>
+<tr>
+  <td>18:42</td>
+  <td>게스트 출력</td>
+  <td>VIP 개인약품 라벨</td>
+  <td>1</td>
+  <td>GUEST PRINT</td>
+</tr>
+<tr>
+  <td>18:57</td>
+  <td>등록 사용자</td>
+  <td>응급 트레이 라벨</td>
+  <td>1</td>
+  <td>간호팀 공용</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>5. 라벨 양식 정보</h2>
+<p>라벨 양식: VIP 개인약품 라벨</p>
+<p>포함 항목:</p>
+<ul>
+<li>환자명</li>
+<li>약품 코드</li>
+<li>복용 시간</li>
+<li>보관 위치</li>
+<li>담당자 확인란</li>
+</ul>
+<p>라벨 양식 예시:</p>
+<p>환자명: 도진명</p>
+<p>약품 코드: D-CARDIN 19</p>
+<p>복용 시간: 19:00</p>
+<p>보관 위치: C-2</p>
+<p>담당자 확인: ________</p>
+</article></main></body></html>

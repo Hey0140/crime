@@ -1,0 +1,76 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>심장약 복용 시간표</title><style>
+:root{--bg:#090908;--panel:#151210;--text:#eee8dc;--muted:#b9aa91;--gold:#c8a767;--line:#40362a;--danger:#8d2e2e;}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at top,#21180f,#090908 55%);color:var(--text);font-family:Inter,Apple SD Gothic Neo,Malgun Gothic,sans-serif;line-height:1.75;}
+a{color:#e4c77e;text-decoration:none;border-bottom:1px solid rgba(228,199,126,.35)} a:hover{color:#fff2bd}.wrap{max-width:980px;margin:0 auto;padding:44px 22px 90px}.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:24px;color:var(--muted);font-size:14px}.home{border:1px solid var(--line);padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.03)}.page{background:rgba(18,15,13,.92);border:1px solid var(--line);border-radius:22px;padding:34px;box-shadow:0 20px 80px rgba(0,0,0,.35)}
+h1{font-size:36px;line-height:1.2;margin:0 0 24px;border-bottom:1px solid var(--line);padding-bottom:16px}h2{font-size:25px;margin-top:34px;color:#f4d891}h3{font-size:19px;margin-top:28px;color:#d9c9a9}p{margin:12px 0}ul,ol{padding-left:24px}li{margin:7px 0}blockquote,.aside{border-left:4px solid var(--gold);background:rgba(200,167,103,.08);padding:14px 18px;border-radius:12px;margin:18px 0;color:#eadfca}pre{background:#080706;border:1px solid #332a22;border-radius:12px;padding:16px;overflow:auto}code{font-family:Consolas,monospace;color:#ffe0a1}hr{border:0;border-top:1px solid var(--line);margin:28px 0}img{display:block;max-width:100%;height:auto;margin:18px auto;border-radius:16px;border:1px solid #332a22;box-shadow:0 16px 48px rgba(0,0,0,.32);object-fit:contain}table{width:100%;border-collapse:collapse;margin:18px 0}td,th{border:1px solid var(--line);padding:9px}.lockbox{border:1px solid rgba(200,167,103,.65);background:linear-gradient(135deg,rgba(70,43,19,.75),rgba(18,15,13,.95));padding:22px;border-radius:18px;margin:0 0 28px}.lock-title{font-size:22px;font-weight:800;color:#ffe0a1;margin-bottom:8px}.lock-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.pw-input{flex:1;min-width:220px;background:#080706;border:1px solid #5b4a36;color:white;border-radius:12px;padding:13px 14px;font-size:16px}.btn{background:var(--gold);border:0;color:#16110b;font-weight:800;border-radius:12px;padding:13px 18px;cursor:pointer}.hint{font-size:13px;color:var(--muted);margin-top:8px}.error{color:#ff9b9b;display:none;margin-top:10px}.locked-content{display:none}.locked .locked-content{display:none}.unlocked .locked-content{display:block}.unlocked .lockbox{display:none}.badge{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:4px 9px;color:var(--muted)}
+@media(max-width:640px){.page{padding:22px;border-radius:16px}h1{font-size:28px}.wrap{padding:24px 12px 70px}.lock-row{display:block}.pw-input,.btn{width:100%;margin-top:8px}}
+</style><script>
+function normPw(s){return (s||'').toString().replace(/월|일|년/g,'').replace(/[^0-9A-Za-z가-힣]/g,'').toLowerCase();}
+function unlockPage(id, answers){
+  const input=document.getElementById('pw-'+id); const err=document.getElementById('err-'+id);
+  const v=normPw(input.value);
+  if(answers.map(normPw).includes(v)){
+    document.body.classList.add('unlocked'); document.body.classList.remove('locked');
+    try{sessionStorage.setItem('unlocked:'+location.pathname,'1')}catch(e){}
+  }else{err.style.display='block'; input.focus();}
+}
+window.addEventListener('DOMContentLoaded',()=>{try{if(sessionStorage.getItem('unlocked:'+location.pathname)==='1'){document.body.classList.add('unlocked');document.body.classList.remove('locked')}}catch(e){}; document.querySelectorAll('.pw-input').forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')i.nextElementSibling.click()}));});
+</script></head><body class="unlocked"><main class="wrap"><div class="topbar"><a class="home" href="../../index.html">← 사건 메인으로</a><span class="badge">추리 게임 HTML</span></div><article class="page"><h1>심장약 복용 시간표</h1>
+<p>문서명: 도진명 회장 개인 복약 관리표</p>
+<p>관리자: 백기태</p>
+<p>최종 수정일: 2026년 12월 22일</p>
+<p>보관 위치: 백기태 진료실 책상 서랍</p>
+<hr />
+<h2>도진명 회장 일일 복약 루틴</h2>
+<table>
+<thead>
+<tr>
+  <th>시간</th>
+  <th>복용 내용</th>
+  <th>비고</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td>08:00</td>
+  <td>아침 혈압 조절제</td>
+  <td>식후 복용</td>
+</tr>
+<tr>
+  <td>13:00</td>
+  <td>보조 순환제</td>
+  <td>점심 이후 복용</td>
+</tr>
+<tr>
+  <td>19:00</td>
+  <td><strong>심장 리듬 안정제</strong></td>
+  <td><strong>반드시 정량 복용</strong></td>
+</tr>
+<tr>
+  <td>22:30</td>
+  <td>야간 안정용 보조약</td>
+  <td>상태에 따라 생략 가능</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2>19:00 복용 약 상세</h2>
+<p>약품 코드: D-CARDIN 19</p>
+<p>구분: 심장 리듬 안정제</p>
+<p>보관 위치: VIP 약품 냉장고 C-2칸</p>
+<p>복용 시간: 매일 오후 7시</p>
+<p>복용 방식: 담당자 확인 후 직접 복용</p>
+<p>주의사항: 타 약물과 혼합 금지</p>
+<hr />
+<h2>행사 당일 특별 지시</h2>
+<p>일자: 2026년 12월 25일</p>
+<p>행사명: 도진명 회장 65세 생일 행사</p>
+<p>행사 당일 지시사항:</p>
+<ol>
+<li>18:30 이후 음주 제한</li>
+<li>19:00 심장약 복용 확인</li>
+<li>복용 전 혈압 측정</li>
+<li>복용 후 20분간 휴식 권고</li>
+<li>흉부 답답함 또는 어지럼 발생 시 즉시 행사 중단</li>
+</ol>
+</article></main></body></html>

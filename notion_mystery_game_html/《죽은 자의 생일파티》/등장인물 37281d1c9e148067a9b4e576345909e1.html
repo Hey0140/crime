@@ -1,0 +1,78 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>등장인물</title><style>
+:root{--bg:#090908;--panel:#151210;--text:#eee8dc;--muted:#b9aa91;--gold:#c8a767;--line:#40362a;--danger:#8d2e2e;}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at top,#21180f,#090908 55%);color:var(--text);font-family:Inter,Apple SD Gothic Neo,Malgun Gothic,sans-serif;line-height:1.75;}
+a{color:#e4c77e;text-decoration:none;border-bottom:1px solid rgba(228,199,126,.35)} a:hover{color:#fff2bd}.wrap{max-width:980px;margin:0 auto;padding:44px 22px 90px}.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:24px;color:var(--muted);font-size:14px}.home{border:1px solid var(--line);padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.03)}.page{background:rgba(18,15,13,.92);border:1px solid var(--line);border-radius:22px;padding:34px;box-shadow:0 20px 80px rgba(0,0,0,.35)}
+h1{font-size:36px;line-height:1.2;margin:0 0 24px;border-bottom:1px solid var(--line);padding-bottom:16px}h2{font-size:25px;margin-top:34px;color:#f4d891}h3{font-size:19px;margin-top:28px;color:#d9c9a9}p{margin:12px 0}ul,ol{padding-left:24px}li{margin:7px 0}blockquote,.aside{border-left:4px solid var(--gold);background:rgba(200,167,103,.08);padding:14px 18px;border-radius:12px;margin:18px 0;color:#eadfca}pre{background:#080706;border:1px solid #332a22;border-radius:12px;padding:16px;overflow:auto}code{font-family:Consolas,monospace;color:#ffe0a1}hr{border:0;border-top:1px solid var(--line);margin:28px 0}img{display:block;max-width:100%;height:auto;margin:18px auto;border-radius:16px;border:1px solid #332a22;box-shadow:0 16px 48px rgba(0,0,0,.32);object-fit:contain}table{width:100%;border-collapse:collapse;margin:18px 0}td,th{border:1px solid var(--line);padding:9px}.lockbox{border:1px solid rgba(200,167,103,.65);background:linear-gradient(135deg,rgba(70,43,19,.75),rgba(18,15,13,.95));padding:22px;border-radius:18px;margin:0 0 28px}.lock-title{font-size:22px;font-weight:800;color:#ffe0a1;margin-bottom:8px}.lock-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.pw-input{flex:1;min-width:220px;background:#080706;border:1px solid #5b4a36;color:white;border-radius:12px;padding:13px 14px;font-size:16px}.btn{background:var(--gold);border:0;color:#16110b;font-weight:800;border-radius:12px;padding:13px 18px;cursor:pointer}.hint{font-size:13px;color:var(--muted);margin-top:8px}.error{color:#ff9b9b;display:none;margin-top:10px}.locked-content{display:none}.locked .locked-content{display:none}.unlocked .locked-content{display:block}.unlocked .lockbox{display:none}.badge{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:4px 9px;color:var(--muted)}
+@media(max-width:640px){.page{padding:22px;border-radius:16px}h1{font-size:28px}.wrap{padding:24px 12px 70px}.lock-row{display:block}.pw-input,.btn{width:100%;margin-top:8px}}
+</style><script>
+function normPw(s){return (s||'').toString().replace(/월|일|년/g,'').replace(/[^0-9A-Za-z가-힣]/g,'').toLowerCase();}
+function unlockPage(id, answers){
+  const input=document.getElementById('pw-'+id); const err=document.getElementById('err-'+id);
+  const v=normPw(input.value);
+  if(answers.map(normPw).includes(v)){
+    document.body.classList.add('unlocked'); document.body.classList.remove('locked');
+    try{sessionStorage.setItem('unlocked:'+location.pathname,'1')}catch(e){}
+  }else{err.style.display='block'; input.focus();}
+}
+window.addEventListener('DOMContentLoaded',()=>{try{if(sessionStorage.getItem('unlocked:'+location.pathname)==='1'){document.body.classList.add('unlocked');document.body.classList.remove('locked')}}catch(e){}; document.querySelectorAll('.pw-input').forEach(i=>i.addEventListener('keydown',e=>{if(e.key==='Enter')i.nextElementSibling.click()}));});
+</script></head><body class="unlocked"><main class="wrap"><div class="topbar"><a class="home" href="../index.html">← 사건 메인으로</a><span class="badge">추리 게임 HTML</span></div><article class="page"><h1>등장인물</h1>
+<p><img src="%EB%93%B1%EC%9E%A5%EC%9D%B8%EB%AC%BC/ChatGPT_Image_2026%EB%85%84_6%EC%9B%94_2%EC%9D%BC_%EC%98%A4%EC%A0%84_08_28_15.png" alt="ChatGPT Image 2026년 6월 2일 오전 08_28_15.png" /></p>
+<h2>도진명</h2>
+<p><strong>65세 / 도원그룹 회장 / 도원랜드 창립자 / 1961.12.25</strong></p>
+<p>국내 대표 테마파크 기업인 도원그룹의 창립자이자 회장이다.</p>
+<p>젊은 시절 작은 놀이시설 운영업에서 시작해, 현재의 도원랜드와 도원문화재단, 리조트 사업까지 확장시킨 인물이다. 대중에게는 “상상력을 사업으로 만든 기업가”로 알려져 있으며, 도원랜드의 독특한 테마와 몰입형 전시 기획 역시 그의 취향에서 시작되었다.</p>
+<p>도진명은 평범한 형식의 행사를 좋아하지 않는다.</p>
+<p>생일, 기념식, 가족 모임까지도 하나의 무대처럼 꾸미는 것을 즐겼고, 이번 65번째 생일파티 역시 자신이 직접 구상한 전시관 〈도원관: 나의 완벽한 가족〉에서 열기로 했다. 이 전시관은 그의 인생과 가족의 시간을 공간별로 재현한 특별한 장소다.</p>
+<p>겉으로는 여유롭고 품격 있는 노신사처럼 보이지만, 자신이 세운 기준에는 매우 엄격하다. 사람의 재능과 쓸모를 빠르게 파악하는 편이며, 가까운 가족들에게도 감정보다는 결과와 태도를 중시하는 모습을 보여왔다.</p>
+<p>특히 체스를 좋아해 중요한 결정을 앞두면 혼자 체스판을 놓고 생각하는 습관이 있다. 주변 사람들은 그를 두고 “모든 사람을 말판 위에 올려놓고 보는 사람”이라고 말하기도 한다.</p>
+<p>이번 생일파티에는 가족과 가장 가까운 측근들만 초대했다.</p>
+<p>초대장은 모두 도진명이 직접 고른 문구와 함께 발송되었으며, 그는 이 파티를 자신의 인생을 정리하는 가장 중요한 자리로 여기고 있었다.</p>
+<p><img src="%EB%93%B1%EC%9E%A5%EC%9D%B8%EB%AC%BC/ChatGPT_Image_2026%EB%85%84_6%EC%9B%94_2%EC%9D%BC_%EC%98%A4%EC%A0%84_08_50_54.png" alt="ChatGPT Image 2026년 6월 2일 오전 08_50_54.png" /></p>
+<h2>도윤재</h2>
+<p><strong>35세 / 도진명의 장남 / 도원그룹 전략기획본부장 / 1989.12.24</strong></p>
+<p>도진명 회장의 장남이자 도원그룹의 실무를 가장 가까이에서 맡아온 인물이다.</p>
+<p>어릴 때부터 후계자 수업을 받아왔으며, 해외 경영대학원 졸업 후 도원그룹에 입사했다. 현재는 그룹의 신사업과 투자 전략을 총괄하고 있다.</p>
+<p>말수가 많지 않고 감정을 쉽게 드러내지 않는 편이다.</p>
+<p>책임감이 강하고 예의 바른 태도를 유지하지만, 가족들 사이에서는 다소 거리감이 있는 인물로 보인다. 회장의 뜻을 가장 잘 이해하는 사람으로 평가받으며, 임직원들 사이에서는 “조용하지만 빈틈없는 사람”이라는 평을 듣는다.</p>
+<p>공식적인 자리에서는 늘 단정한 정장 차림을 유지하며, 도진명 회장과 함께 그룹 행사에 자주 참석해왔다.</p>
+<p><img src="%EB%93%B1%EC%9E%A5%EC%9D%B8%EB%AC%BC/ChatGPT_Image_2026%EB%85%84_6%EC%9B%94_2%EC%9D%BC_%EC%98%A4%EC%A0%84_08_30_34.png" alt="ChatGPT Image 2026년 6월 2일 오전 08_30_34.png" /></p>
+<h2>도세아</h2>
+<p><strong>30세 / 도진명의 차녀 / 설치미술가, 도원문화재단 이사 / 1994.08.17</strong></p>
+<p>도진명 회장의 둘째 딸이다.</p>
+<p>예술대학을 졸업한 뒤 해외에서 설치미술과 전시기획을 공부했고, 현재는 작가 활동과 함께 도원문화재단 이사직을 맡고 있다.</p>
+<p>감각적이고 자기표현이 분명한 성격이다.</p>
+<p>가족 행사에서도 형식적인 인사보다 분위기와 연출을 신경 쓰는 편이며, 말투는 부드럽지만 자기 기준이 뚜렷하다. 가족들 중 가장 예술적 취향이 강하고, 도진명 회장의 생일 행사나 전시 콘셉트에도 종종 의견을 내왔다.</p>
+<p>화려한 옷차림보다는 독특하고 세련된 스타일을 선호하며, 사람들과 대화할 때 상대를 관찰하는 듯한 태도가 있다.</p>
+<p><img src="%EB%93%B1%EC%9E%A5%EC%9D%B8%EB%AC%BC/ChatGPT_Image_2026%EB%85%84_6%EC%9B%94_2%EC%9D%BC_%EC%98%A4%EC%A0%84_08_32_20.png" alt="ChatGPT Image 2026년 6월 2일 오전 08_32_20.png" /></p>
+<h2>도이준</h2>
+<p><strong>23세 / 도진명의 셋째 아들 / 도원그룹 브랜드기획팀 팀장 / 2003.06.04</strong></p>
+<p>도진명 회장의 막내아들이다.</p>
+<p>어릴 때부터 자유분방하고 붙임성 있는 성격으로 알려져 있었으며, 정해진 틀 안에 머무르기보다는 새로운 사람을 만나고 분위기를 주도하는 일을 좋아했다. 대학 졸업 후 몇 년간 해외에 머물렀고, 3년 전 도원그룹 브랜드기획팀에 합류했다.</p>
+<p>말이 빠르고 농담이 많아 무거운 자리에서도 분위기를 가볍게 만드는 데 능하다. 공식 행사에서는 밝고 사교적인 모습을 보이며, 도진명 회장의 생일파티에서도 손님들을 자연스럽게 맞이하는 역할을 맡았다.</p>
+<p>가족들 사이에서는 여전히 철없는 막내처럼 여겨지지만, 의외로 사람의 표정과 기분을 빠르게 읽는 편이다. 다만 진지한 대화나 책임이 따르는 상황에서는 쉽게 농담으로 넘기거나 자리를 피하려는 경향이 있다.</p>
+<p>겉으로는 아무 고민 없어 보이는 인물이지만, 최근 몇 년 사이 사생활과 관련된 크고 작은 소문이 이어지며 가족 내에서도 그를 불안하게 바라보는 시선이 생겼다. 도이준은 그런 시선마저 웃어넘기지만, 가까이서 보면 그 밝은 태도에는 어딘가 조급함이 섞여 있다.</p>
+<p><img src="%EB%93%B1%EC%9E%A5%EC%9D%B8%EB%AC%BC/ChatGPT_Image_2026%EB%85%84_6%EC%9B%94_1%EC%9D%BC_%EC%98%A4%ED%9B%84_06_51_01.png" alt="ChatGPT Image 2026년 6월 1일 오후 06_51_01.png" /></p>
+<h2>서리나</h2>
+<p><strong>38세 / 도진명의 아내 / 전 갤러리 운영자 / 1985.08.09</strong></p>
+<p>도진명 회장의 두 번째 아내다.</p>
+<p>두 사람은 5년 전 한 자선 미술 행사에서 처음 만났고, 3년 전 정식으로 결혼했다. 결혼 전에는 작은 갤러리를 운영했으며, 예술계와 사교계에 폭넓은 인맥을 가지고 있다.</p>
+<p>차분하고 우아한 분위기의 인물이다.</p>
+<p>말투가 느리고 부드럽지만, 낯선 사람 앞에서도 쉽게 주눅 들지 않는다. 사람을 대할 때 적당한 거리를 유지하며, 감정을 노골적으로 드러내기보다는 상황을 조용히 살피는 편이다.</p>
+<p>도진명 회장과 함께 공식 석상에 자주 모습을 드러냈으며, 최근에는 도원문화재단의 행사에도 참여하고 있다. 가족들 사이에서는 아직 완전히 가까워지지는 못했지만, 겉으로는 늘 품위 있는 태도를 유지한다.</p>
+<p><img src="%EB%93%B1%EC%9E%A5%EC%9D%B8%EB%AC%BC/ChatGPT_Image_2026%EB%85%84_6%EC%9B%94_2%EC%9D%BC_%EC%98%A4%EC%A0%84_08_36_28.png" alt="ChatGPT Image 2026년 6월 2일 오전 08_36_28.png" /></p>
+<h2>문해준</h2>
+<p><strong>40세 / 도진명의 개인 비서 / 도원그룹 회장실 비서팀장 / 1984.01.20</strong></p>
+<p>도진명 회장을 15년째 보좌하고 있는 개인 비서다.</p>
+<p>도원그룹 회장실에 입사한 뒤 주요 일정, 외부 행사, 사적인 요청까지 도맡아 처리해왔다. 도진명 회장의 가장 가까운 실무 담당자로, 회장의 취향과 생활 패턴을 누구보다 잘 알고 있다.</p>
+<p>조용하고 절제된 성격이다.</p>
+<p>불필요한 말을 거의 하지 않고, 필요한 순간에만 정확하게 말한다. 감정을 드러내지 않는 태도 때문에 차갑게 보이기도 하지만, 일 처리만큼은 철저하다는 평가를 받는다.</p>
+<p>가족은 아니지만 오랫동안 회장 곁을 지켜왔기 때문에, 도원가 사람들도 그를 단순한 직원 이상으로 대한다. 이번 생일파티에서도 초대장 발송, 좌석 배치, 일정 관리를 담당했다.</p>
+<p><img src="%EB%93%B1%EC%9E%A5%EC%9D%B8%EB%AC%BC/ChatGPT_Image_2026%EB%85%84_6%EC%9B%94_2%EC%9D%BC_%EC%98%A4%EC%A0%84_08_48_56.png" alt="ChatGPT Image 2026년 6월 2일 오전 08_48_56.png" /></p>
+<h2>백기태</h2>
+<p><strong>45세 / 도진명의 주치의 / 심장내과 전문의 / 1981.07.18</strong></p>
+<p>도진명 회장의 건강을 관리해온 주치의다.</p>
+<p>대학병원 심장내과 전문의 출신으로, 8년 전부터 도진명 회장의 정기 검진과 건강 관리를 맡고 있다. 현재는 VIP 전담 클리닉을 운영하며, 도원그룹 주요 인사들의 건강 자문도 함께 담당하고 있다.</p>
+<p>침착하고 이성적인 성격이다.</p>
+<p>말투는 건조한 편이지만, 환자에게 필요한 설명은 빠짐없이 하는 스타일이다. 응급 상황에서도 쉽게 흔들리지 않으며, 주변 사람들에게 신뢰감을 주는 인물이다.</p>
+<p>도진명 회장의 오랜 지병과 생활 습관을 잘 알고 있으며, 이번 생일파티에도 회장의 건강 상태를 확인하기 위해 초대받았다. 가족 구성원은 아니지만, 도진명 회장의 사적인 자리에도 종종 함께한 인물이다.</p>
+</article></main></body></html>
